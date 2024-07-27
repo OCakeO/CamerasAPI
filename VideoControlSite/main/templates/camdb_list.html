@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список объявлений</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a {
+            color: #005bb5;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Список объявлений</h1>
+        
+        <!-- Удаляем форму для ввода ID -->
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Автор</th>
+                    <th>Просмотры</th>
+                    <th>Позиция</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for add in camdb %}
+                    <tr>
+                        <td><a href="{% url 'view_camdb_json' camdb_id=add.camdb_id %}">{{ add.camdb_id }}</a></td>
+                        <td>{{ add.title }}</td>
+                        <td>{{ add.author }}</td>
+                        <td>{{ add.views }}</td>
+                        <td>{{ add.position }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Нет объявлений.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'add_camdb' %}">Добавить новое объявление</a>
+        <a href="{% url 'home' %}">На главную</a>
+        <!-- Форма для удаления всех объявлений -->
+    <form method="post" action="{% url 'delete_all_camdb' %}">
+        {% csrf_token %}
+        <button type="submit" style="margin-top: 20px;">Удалить все объявления</button>
+    </form>
+    </div>
+</body>
+</html>
